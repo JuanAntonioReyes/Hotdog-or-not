@@ -1,7 +1,5 @@
 let predictionText = document.getElementById("prediction");
 
-let datos;
-
 let imageInput = document.getElementById("imageInput");
 // Set the file input onChange listener
 imageInput.addEventListener("change", handleImage);
@@ -28,13 +26,12 @@ function handleImage() {
 	let reader = new FileReader();
 
 	// This function will execute when we call "readAsDataURL"
-	reader.onloadend = function () {
+	reader.onload = function () {
 		// Set the img src to the image
 		imageTag.src = reader.result;
-		
+
 		// Check if the image is a hotdog
 		classifier.predict(imageTag, checkHotdog);
-		console.log("Hello world!");
 	}
 
 	if (image) {
@@ -43,11 +40,9 @@ function handleImage() {
 		imageTag.src = "";
 	}
 
-	
 }
 
 function checkHotdog(err, data) {
-	datos=data;
 	let classifierPrediction = data[0].className;
 
 	let isHotdog = ( classifierPrediction === "hotdog, hot dog, red hot" );
