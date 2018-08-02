@@ -20,15 +20,25 @@ const classifier = ml5.imageClassifier("MobileNet", function() {
 	selectImageButton.style.display = "inline";
 });
 
+// TEMP SOLUTION PATCH TO THE FIRST LOAD FAIL (1/2)
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+// END TEMP
+
 function handleImage() {
 	let imageTag = document.getElementById("image");
 	let image = this.files[0];
 	let reader = new FileReader();
 
 	// This function will execute when we call "readAsDataURL"
-	reader.onload = function () {
+	reader.onload = async function () {
 		// Set the img src to the image
 		imageTag.src = reader.result;
+		
+		// TEMP SOLUTION PATCH TO THE FIRST LOAD FAIL (2/2)
+		await sleep(200);
+		// END TEMP
 
 		// Check if the image is a hotdog
 		classifier.predict(imageTag, checkHotdog);
