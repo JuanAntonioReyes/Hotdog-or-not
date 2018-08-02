@@ -1,4 +1,8 @@
-#imageInput {
+body {
+	background: darkkhaki;
+}
+
+#imageInput, #selectImageButton {
 	display: none;
 }
 

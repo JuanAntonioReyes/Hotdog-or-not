@@ -1,15 +1,23 @@
-let predictionP = document.getElementById("prediction");
+let predictionText = document.getElementById("prediction");
 
 let imageInput = document.getElementById("imageInput");
 // Set the file input onChange listener
 imageInput.addEventListener("change", handleImage);
+
+// Set the select image button onClick listener
+let selectImageButton = document.getElementById("selectImageButton");
+selectImageButton.addEventListener("click", function (e) {
+	if (imageInput) {
+		imageInput.click();
+	}
+});
 
 // Initialize the image classifier MobileNet
 const classifier = ml5.imageClassifier("MobileNet", function() {
 	let loadingP = document.getElementById("loading");
 
 	loadingP.style.display = "none";
-	imageInput.style.display = "block";
+	selectImageButton.style.display = "inline";
 });
 
 function handleImage() {
@@ -36,13 +44,15 @@ function handleImage() {
 }
 
 function checkHotdog(err, data) {
-	let prediction = data[0].className;
+	let classifierPrediction = data[0].className;
 
-	let isHotdog = ( prediction === "hotdog, hot dog, red hot" );
+	let isHotdog = ( classifierPrediction === "hotdog, hot dog, red hot" );
 
 	if (isHotdog) {
-		predictionP.innerText = "HOTDOG!";
+		predictionText.style.color = "green";
+		predictionText.innerText = "HOTDOG! 🌭";
 	} else {
-		predictionP.innerText = "NOT HOTDOG";
+		predictionText.style.color = "red";
+		predictionText.innerText = "NOT HOTDOG";
 	}
 }
