@@ -12,6 +12,13 @@ selectImageButton.addEventListener("click", function (e) {
 	}
 });
 
+let imageTag = document.getElementById("image");
+// When the image is loaded (Also whe we change it "src")
+imageTag.addEventListener("load", function (e) {
+	// Check if the image is a hotdog
+	classifier.predict(imageTag, checkHotdog);
+});
+
 // Initialize the image classifier MobileNet
 const classifier = ml5.imageClassifier("MobileNet", function() {
 	let loadingP = document.getElementById("loading");
@@ -20,28 +27,15 @@ const classifier = ml5.imageClassifier("MobileNet", function() {
 	selectImageButton.style.display = "inline";
 });
 
-// TEMP SOLUTION PATCH TO THE FIRST LOAD FAIL (1/2)
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-// END TEMP
-
 function handleImage() {
-	let imageTag = document.getElementById("image");
+	//let imageTag = document.getElementById("image");
 	let image = this.files[0];
 	let reader = new FileReader();
 
 	// This function will execute when we call "readAsDataURL"
-	reader.onload = async function () {
+	reader.onload = function () {
 		// Set the img src to the image
 		imageTag.src = reader.result;
-		
-		// TEMP SOLUTION PATCH TO THE FIRST LOAD FAIL (2/2)
-		await sleep(200);
-		// END TEMP
-
-		// Check if the image is a hotdog
-		classifier.predict(imageTag, checkHotdog);
 	}
 
 	if (image) {
